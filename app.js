@@ -9,6 +9,7 @@ var app;
 		this.news=[];
 		this.persons=[];
 		this.competitions=[];
+		this.person;
 
 		var a=function(){
 			d=new Date();
@@ -18,7 +19,7 @@ var app;
 		};
 
 		var addPerson=function(nam,rat){
-			var pers={name:nam,rating:rat,id:Date.now().toString(),cachedProblems:[],email:"",group:"",school:""};
+			var pers={name:nam,rating:rat,id:Date.now().toString(),cachedProblems:[],email:"",group:"",school:"",icon:"person.png"};
 			oThis.persons.push(pers);
 			return pers;
 		};
@@ -58,7 +59,13 @@ var app;
 		};
 
 		var addCompetition=function(nam,_type,opts){
-			var comp={name:nam,type:_type,persons:opts};
+			var comp={name:nam,type:_type,options:opts,id:Date.now().toString(),count:0};
+			
+			for (var i = 0; i < oThis.persons.length; i++) {
+				if((_type==="public") || (_type==="school" && oThis.persons[i].school===opts[0]) || (_type==="group" && oThis.persons[i].school===opts[0]) || (_type==="invite" && opts.indexOf(oThis.persons[i].id)>-1))
+				comp.count+=1;
+			};
+
 			oThis.competitions.push(comp);
 			return comp;
 		};
@@ -66,6 +73,18 @@ var app;
 		var getCompetitions=function(){
 			return oThis.competitions;
 		};
+
+		this.getAvaibleCompetitions=function(pers){
+			var coms=[];
+			var _coms=getCompetitions();
+			for (var i = 0; i < _coms.length; i++) {
+				if(_coms[i].type==="public" || (_coms[i].type==="school" && oThis.person.school===_coms[i].options[0]) || (_coms[i].type==="group" && oThis.person.group===_coms[i].options[0]) || (_coms[i].type==="invite" && _coms[i].options.indexOf(oThis.person.id)>-1))
+					coms.push(_coms[i]);
+			};
+			return coms; 
+		};
+
+
 
 		a();
 
@@ -75,7 +94,9 @@ var app;
 		addPerson("pm",200);
 		var p = addPerson("kq",150);
 
+		this.person=p;
+
 		addNews("<h3>This are News</h3>",p);
-		addCompetition("","");
+		addCompetition("Graphs","public",[]);
 	}]);
 })();

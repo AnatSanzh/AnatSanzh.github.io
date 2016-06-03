@@ -22,7 +22,7 @@
 						<li class="nav-item"><a href="#a" class="nav-link">Link 3</a></li>
 						<li class="nav-item"><a href="#a" class="nav-link">Link 4</a></li>
 						<li class=""><font color=gold>{{main._time}}<br>{{main._date}}</font></li>
-						<li class="nav-item"><img src="person.png" class="img-circle" width=40 height=40><center><a href="#a" class="nav-link">Exit</a></center></li>
+						<li class="nav-item"><img ng-src="{{main.person.icon}}" class="img-circle" width=40 height=40><center><a href="#a" class="nav-link">Exit</a></center></li>
 						<li class=""><img src="ukr.png" width=30 height=20><br><img src="eng.png" width=30 height=20></li>
 						<li class=""><center><a href="#a" class="nav-link">UA</a><br><a href="#a" class="nav-link">UK</a></center></li>
 					</ul>
@@ -41,8 +41,7 @@
 						<hr>
 						{{$.parseHTML( nw.newsCode )}}
 						<hr>
-						<img src="person.png" class="img-circle" width=40 height=40>
-						<a href="profile.html#id={{nw.author.id}}">{{nw.author.name}}</a>
+						<a href="profile.html#id={{nw.author.id}}"><img src="person.png" class="img-circle" width=40 height=40> {{nw.author.name}}</a>
 					</div>
 				</div>
 			</div>
@@ -54,8 +53,11 @@
 					<center>Rating</center>
 					<ul class="list-inline" ng-repeat="item in main.getTop(3)">
 						<hr>
-						<li><img src="person.png" class="img-circle" width=40 height=40>
-							{{item.name}}
+						<li>
+							<a href="profile.html#id={{nw.author.id}}">
+								<img ng-src="{{item.icon}}" class="img-circle" width=40 height=40>
+								{{item.name}}
+							</a>
 						</li>
 						<li class="text-right">{{item.rating}}</li>
 						<br>
@@ -64,12 +66,14 @@
 
 				<div class="well">
 					<center>Competitions</center>
-					<ul class="list-inline" ng-repeat="item in main.getCompetitions()">
+					<ul class="list-inline" ng-repeat="item in main.getAvaibleCompetitions(main.person)">
 						<hr>
 						<li>
-							{{item.name}}
+							<a href="competition.html#id={{item.id}}">
+								{{item.name}}
+							</a>
 						</li>
-						<li class="text-right">{{item.persons.length}}</li>
+						<li class="text-right">{{item.count}}</li>	
 						<br>
 					</ul>
 				</div>
